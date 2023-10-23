@@ -36,9 +36,22 @@ def test_org_can_be_found(github_api):
     r = github_api.get_organisation('errfree')
     assert r['login'] == 'errfree'
 
+
 @pytest.mark.api
 def test_org_cannot_be_found(github_api):
     r = github_api.get_organisation('kostyantyn')
     assert r['message'] == 'Not Found'
+
+
+@pytest.mark.api
+def test_count_of_followers(github_api):
+    r = github_api.get_organisation('errfree')
+    assert r['followers'] == 3
+
+
+@pytest.mark.api
+def test_type_of_org(github_api):
+    r = github_api.get_organisation('errfree')
+    assert r['type'] == 'Organization'
 
 
