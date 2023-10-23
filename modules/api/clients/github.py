@@ -13,4 +13,8 @@ class GitHub:
         body = r.json()
         return body
     
+    def get_organisation(self, name):
+        r = requests.get(f'https://api.github.com/orgs/{name}')
+        body = r.json()
+        return body
     

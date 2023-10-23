@@ -31,3 +31,14 @@ def test_repo_with_single_char_be_found(github_api):
     assert r['total_count'] != 0
 
 
+@pytest.mark.api
+def test_org_can_be_found(github_api):
+    r = github_api.get_organisation('errfree')
+    assert r['login'] == 'errfree'
+
+@pytest.mark.api
+def test_org_cannot_be_found(github_api):
+    r = github_api.get_organisation('kostyantyn')
+    assert r['message'] == 'Not Found'
+
+
