@@ -1,4 +1,5 @@
 import pytest
+import datetime
 from modules.common.database import Database
 
 
@@ -61,4 +62,73 @@ def test_detailed_orders():
     assert orders[0][1] == 'Sergii'
     assert orders[0][2] == 'солодка вода'
     assert orders[0][3] == 'з цукром'
+
+
+@pytest.mark.ind_database
+def test_insert_new_order():
+    db = Database()
+    db.insert_new_order(2,2,2)
+    order = db.get_todays_orders()
+    assert len(order) == 1
+    assert order[0][0] == 2
+    db.delete_new_orders()
     
+
+@pytest.mark.ind_database
+def test_float_and_negative_data_in_order():
+    db = Database()
+    db.insert_new_order(2,1.5,3)
+    db.insert_new_order('3','4',-5)
+    order = db.get_todays_orders()
+    print(order)
+    assert len(order) == 2
+    assert order[1][0] == 4
+    assert order[1][1] == -5
+    assert order[0][0] == 1.5
+    assert order[0][1] == 3
+    db.delete_new_orders()
+
+
+@pytest.mark.ind_database
+def test_join_illegal_id_order():
+    db = Database()
+    db.insert_new_order(2,1,2)
+    db.insert_new_order(3,3,3)
+    order = db.get_todays_orders()
+    print(order)
+    orders = db.get_detailed_orders()
+    print(orders)
+    assert len(orders) == 2
+    db.delete_new_orders()
+
+
+@pytest.mark.ind_database
+def test_date_in_order():
+    db = Database()
+    db.insert_new_order(2,2,2)
+    order = db.get_todays_orders()
+    today = datetime.datetime.now()
+    str_today = f"{today.year}-{today.month}-{today.day}"
+    assert order[0][2]==str_today
+    db.delete_new_orders()
+  
+@pytest.mark.ind_database
+def test_insert_new_product_name_int():
+    db = Database()
+    db.insert_product(99, 555, 'без цукру', 15)
+    product = db.select_product_by_id(99)
+    assert product[0][0] == '555'
+    assert product[0][1] == 'без цукру'
+    assert product[0][2] == 15
+    db.delete_product_by_id(99)
+
+
+
+
+
+
+
+
+
+
+

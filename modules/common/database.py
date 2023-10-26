@@ -58,7 +58,27 @@ class Database():
         record = self.cursor.fetchall()
         return record
 
-    
+    def insert_new_order(self, id, customer_id, product_id):
+        query = f"INSERT OR REPLACE INTO orders (id, customer_id, product_id, order_date)\
+            VALUES ({id}, {customer_id}, {product_id}, CURRENT_DATE)"
+        self.cursor.execute(query)
+        self.connection.commit()
 
+    def get_todays_orders(self):
+        query = f"SELECT customer_id, product_id, order_date FROM orders WHERE order_date = CURRENT_DATE"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record
+    
+    def delete_new_orders(self):
+        query = "DELETE FROM orders WHERE  order_date = CURRENT_DATE"
+        self.cursor.execute(query)
+        self.connection.commit()
+    
+    def select_product_by_id(self, product_id):
+        query = f"SELECT name, description, quantity  FROM products WHERE id = {product_id}"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record
     
 
