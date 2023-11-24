@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-class StartPagePoctCH(BasePage):
+class StartPagePoctUA(BasePage):
     URL = 'https://novaposhta.ua'
 
     def __init__(self) -> None:
